@@ -10,8 +10,8 @@ using SistemaGerenciadorDeNegocios.Data;
 namespace SistemaGerenciadorDeNegocios.Migrations
 {
     [DbContext(typeof(SistemaGerenciadorDeNegociosContext))]
-    [Migration("20201205014215_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201212030442_ClassesNecessariasParaCadastrarCliente")]
+    partial class ClassesNecessariasParaCadastrarCliente
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
