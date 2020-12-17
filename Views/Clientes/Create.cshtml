@@ -1,37 +1,82 @@
-﻿@model SistemaGerenciadorDeNegocios.Models.Cliente
-
+﻿@model SistemaGerenciadorDeNegocios.View_Model.ClienteViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Cliente</h4>
+<h1>Cadastrar cliente</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
+                <label asp-for="Cliente.Nome" class="control-label"></label>
+                <input asp-for="Cliente.Nome" class="form-control" />
+                <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Cpf" class="control-label"></label>
-                <input asp-for="Cpf" class="form-control" />
-                <span asp-validation-for="Cpf" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="Cliente.Cpf" class="control-label"></label>
+                    <input asp-for="Cliente.Cpf" class="form-control" />
+                    <span asp-validation-for="Cliente.Cpf" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Cliente.Telefone" class="control-label"></label>
+                    <input asp-for="Cliente.Telefone" class="form-control" />
+                    <span asp-validation-for="Cliente.Telefone" class="text-danger"></span>
+                </div>
             </div>
+            <p></p>
             <div class="form-group">
-                <label asp-for="Telefone" class="control-label"></label>
-                <input asp-for="Telefone" class="form-control" />
-                <span asp-validation-for="Telefone" class="text-danger"></span>
+                <label asp-for="Cliente.Referencia" class="control-label"></label>
+                <input asp-for="Cliente.Referencia" class="form-control" />
+                <span asp-validation-for="Cliente.Referencia" class="text-danger"></span>
             </div>
+            <h6>Endereço</h6>
+            <hr />
+            <div class="row">
+                <div class="col-md-10">
+                    <label asp-for="Endereco.Rua" class="control-label"></label>
+                    <input asp-for="Endereco.Rua" class="form-control" />
+                    <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Endereco.NumeroDaCasa" class="control-label"></label>
+                    <input asp-for="Endereco.NumeroDaCasa" class="form-control" />
+                    <span asp-validation-for="Endereco.NumeroDaCasa" class="text-danger"></span>
+                </div>
+            </div>
+            <p></p>
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="Endereco.Bairro" class="control-label"></label>
+                    <input asp-for="Endereco.Bairro" class="form-control" />
+                    <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Endereco.Cep" class="control-label"></label>
+                    <input asp-for="Endereco.Cep" class="form-control" />
+                    <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
+                </div>
+            </div>
+            <p></p>
+            <div class="row">
+                @if (ViewBag.ListaDeEstados != null)
+                {
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.IdEstado, ViewBag.ListaDeEstados as SelectList, "---Selecione o estado---", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.IdCidade, new SelectList(""), "--Selecione a cidade--", new { @class = "form-control" })
+                    </div>
+                }
+            </div>
+            <p></p>
             <div class="form-group">
-                <label asp-for="Referencia" class="control-label"></label>
-                <input asp-for="Referencia" class="form-control" />
-                <span asp-validation-for="Referencia" class="text-danger"></span>
+                <label asp-for="Endereco.PontoDeReferencia" class="control-label"></label>
+                <input asp-for="Endereco.PontoDeReferencia" class="form-control" />
+                <span asp-validation-for="Endereco.PontoDeReferencia" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -43,6 +88,27 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script src="~/js/jquery-3.5.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#IdEstado").change(function () {
+            var EstadoId = $(this).val();
+            debugger
+            $.ajax({
+                type: "Post",
+                url: "/Clientes/GetCidades?EstadoId=" + EstadoId,
+                contentType: "html",
+                success: function (response) {
+                    debugger
+                    $("#IdCidade").empty();
+                    $("#IdCidade").append(response);
+                }
+            })
+
+        })
+    })
+
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

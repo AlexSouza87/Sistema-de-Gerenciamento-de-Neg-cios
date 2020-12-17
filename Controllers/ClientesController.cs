@@ -19,9 +19,10 @@ namespace SistemaGerenciadorDeNegocios.Controllers
         }
 
         // GET: Clientes
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _context.Clientes.ToListAsync());
+            //return View(await _context.Clientes.ToListAsync());
+            return View();
         }
 
         // GET: Clientes/Details/5
@@ -45,6 +46,7 @@ namespace SistemaGerenciadorDeNegocios.Controllers
         // GET: Clientes/Create
         public IActionResult Create()
         {
+            ViewBag.ListaDeEstados = new SelectList(GetEstados(), "EstadoId", "Nome");
             return View();
         }
 
@@ -147,6 +149,19 @@ namespace SistemaGerenciadorDeNegocios.Controllers
         private bool ClienteExists(int id)
         {
             return _context.Clientes.Any(e => e.ClienteId == id);
+        }
+
+        public List<Estado> GetEstados()
+        {
+            List<Estado> listaDeEstados = _context.Estados.ToList();
+            return listaDeEstados;
+        }
+
+        public ActionResult GetCidades(int EstadoId)
+        {
+            List<Cidade> listaDeCidades = _context.Cidades.Where(x => x.EstadoId == EstadoId).ToList();
+            ViewBag.CidadesOpcoes = new SelectList(listaDeCidades, "CidadeId", "Nome");
+            return PartialView("CidadesOptionPartial");
         }
     }
 }

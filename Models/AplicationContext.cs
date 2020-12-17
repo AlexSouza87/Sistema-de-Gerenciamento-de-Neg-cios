@@ -13,6 +13,10 @@ namespace SistemaGerenciadorDeNegocios.Models
 
         }
 
+        public AplicationContext()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<ClienteEndereco>().HasKey(sc => new { sc.ClienteId, sc.EnderecoId });

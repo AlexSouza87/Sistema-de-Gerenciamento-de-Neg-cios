@@ -10,5 +10,6 @@ namespace SistemaGerenciadorDeNegocios.Models
         public int CidadeId { get; set; }
         public string Nome { get; set; }
         public virtual Estado Estado { get; set; }
+        public virtual int EstadoId { get; set; }
     }
 }
